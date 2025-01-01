@@ -47,6 +47,43 @@ show collections
 
 // 컬렉션 삭제
 db.book.drop()
+
+// 컬렉션 생성
+// 몽고DB 3.6+부터 JSON 스키마 검증 기능 제공 (데이터 구조 제한)
+// additionalProperties: false 설정을 사용하면, 스키마에 정의되지 않은 필드가 포함된 경우 에러를 발생
+db.createCollection("users", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "email"],
+      properties: {
+        name: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        email: {
+          bsonType: "string",
+          pattern: "^.+@.+\\..+$",
+          description: "must be a valid email and is required"
+        },
+        age: {
+          bsonType: "int",
+          minimum: 0,
+          description: "must be a positive integer"
+        },
+        hobbies: {
+          bsonType: "array",
+          items: {
+            bsonType: "string"
+          },
+          description: "must be an array of strings"
+        }
+      }
+    }
+  },
+  validationLevel: "strict", // 강력한 검증 (기본값)
+  validationAction: "error"  // 유효성 검사 실패 시 에러 발생
+});
 ```
 
 ## 도큐먼트 명령어
