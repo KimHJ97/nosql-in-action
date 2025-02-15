@@ -32,6 +32,7 @@ MongoDB 복제 셋(Replica Set)은 고가용성(High Availability)과 데이터 
 
 복제 셋의 모든 멤버는 같은 셋 내 다른 멤버와 연결할 수 있어야 한다. 몽고DB 3.6+ 부터는 mongod는 기본적으로 로컬호스트(127.0.0.1)에만 바인딩된다. 복제 셋의 각 멤버가 다른 멤버와 통신하려면 다른 멤버가 연결할 수 있는 IP 주소에도 바인딩해야 한다. 인스턴스를 각기 다른 서버의 멤버와 함께 복제 셋의 멤버로 실행하려면, 명령행 매개변수 --bind_ip를 지정하거나 인스턴스 구성 파일에 있는 bind_ip를 사용한다.
 
+ - mongod 노드 실행시 --replSet 옵션을 지정해주어야 한다. 해당 옵션을 주지 않고 서버를 실행하면 rs.initiate(), rs.add() 등으로 멤버를 추가하여도 레플리카셋 멤버로 구성되지 않는다.
 ```javascript
 // MongoDB 노드 설정
 mongod --replSet "rs0" --port 27017 --dbpath /data/db1 --bind_ip localhost
